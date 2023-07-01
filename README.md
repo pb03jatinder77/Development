@@ -1,2 +1,5 @@
 # Development
-Learn node js
+I have created a weather app for just learning Node.js.
+
+# Install app
+npm install
