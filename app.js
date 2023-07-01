@@ -1,34 +1,26 @@
-const request = require('request');
-const axios = require('axios');
+const { getIPAddress } = require('./src/GetIpAddress');
+const { getLoaction } = require('./src/GetLocation');
+const { getWeather } = require('./src/GetWeather');
 
-/** get you ip adress */
-const getIPAddress = async () => {
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        const ip = data.ip;
-        try {
-            return await axios.get(`http://ip-api.com/json/${ip}`);
-        } catch (error) {
-            return ('Error getting geolocation data:', error);
-        }
-    } catch (error) {
+getIPAddress(null,(error, ipAddress) => {
+    if (error) {
         console.error('Error getting IP address:', error);
-    }
-};
-getIPAddress()
-    .then((location) => {
-        const city = location?.data?.city
-        var options = {
-            'method': 'GET',
-            'url': `http://api.weatherstack.com/current?access_key=b735237d29e2ca3b1a45ce40199f0d7f&query=${city}`,
-            'json':true
-        };
-        request(options, function (error, response) {
-            if (error) throw new Error(error); 
-            console.log(`Today's weather in ${location?.data?.city} is ${response?.body?.current?.weather_descriptions[0]}`);
+    } else {
+        console.log('ipAddress: ', ipAddress);
+        getLoaction(ipAddress, (error, location) => {
+            if (error) {
+                console.error('Error getting geolocation data:', error);
+            } else {
+                console.log('Location: ', location?.data?.city);
+                const city = location?.data?.city
+                getWeather(city, (error, Weather) => {
+                    if (error) {
+                        console.error('Error getting weather data:', error);
+                    } else {
+                        console.log('Weather: ', Weather);
+                    }
+                });
+            }
         });
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    }
+});
