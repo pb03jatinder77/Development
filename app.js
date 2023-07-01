@@ -22,12 +22,11 @@ getIPAddress()
         var options = {
             'method': 'GET',
             'url': `http://api.weatherstack.com/current?access_key=b735237d29e2ca3b1a45ce40199f0d7f&query=${city}`,
-            'headers': {
-            }
+            'json':true
         };
         request(options, function (error, response) {
             if (error) throw new Error(error); 
-            console.log(`Today's weather in ${location?.data?.city} is ${JSON.parse(response?.body)?.current?.weather_descriptions[0]}`);
+            console.log(`Today's weather in ${location?.data?.city} is ${response?.body?.current?.weather_descriptions[0]}`);
         });
     })
     .catch((error) => {
