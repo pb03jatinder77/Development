@@ -11,13 +11,13 @@ const usersRouter = require('./routes/users');
 const app = express();
 
 // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
-
-app.engine('handlebars', exphbs.engine());
-app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+
+// app.engine('handlebars', exphbs.engine());
+// app.set('view engine', 'handlebars');
+// app.set('views', path.join(__dirname, 'views'));
 
 // Set the public file path
 
